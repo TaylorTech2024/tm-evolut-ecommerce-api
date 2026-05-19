@@ -1,3 +1,12 @@
 package com.tmevolut.ecommerce.api.dto;
+
 import jakarta.validation.constraints.NotBlank;
-public record CategoriaRequest(@NotBlank(message="Nome é obrigatório") String nome) {}
+import jakarta.validation.constraints.Size;
+
+public record CategoriaRequest(
+
+        @NotBlank(message = "O nome da categoria é obrigatório")
+        @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+        String nome
+
+) {}

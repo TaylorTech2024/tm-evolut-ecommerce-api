@@ -11,13 +11,52 @@ import java.time.LocalDateTime;
 
 @Service
 public class ClienteService {
+
     private final ClienteRepository repository;
-    public ClienteService(ClienteRepository repository) { this.repository = repository; }
-    @Transactional public ClienteResponse criar(ClienteRequest request) { return toResponse(repository.save(new Cliente(request.nome(), request.email()))); }
-    public Page<ClienteResponse> listar(Pageable pageable) { return repository.findByDeletedAtIsNull(pageable).map(this::toResponse); }
-    public Cliente buscarEntidade(Long id) { return repository.findById(id).filter(c -> c.getDeletedAt() == null).orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado")); }
-    public ClienteResponse buscar(Long id) { return toResponse(buscarEntidade(id)); }
-    @Transactional public ClienteResponse atualizar(Long id, ClienteRequest request) { Cliente c = buscarEntidade(id); c.setNome(request.nome()); c.setEmail(request.email()); return toResponse(repository.save(c)); }
-    @Transactional public void remover(Long id) { Cliente c = buscarEntidade(id); c.setDeletedAt(LocalDateTime.now()); repository.save(c); }
-    private ClienteResponse toResponse(Cliente c) { return new ClienteResponse(c.getId(), c.getNome(), c.getEmail()); }
+
+    public ClienteService(ClienteRepository repository) {
+        this.repository = repository;
+    }
+
+    @Transactional
+    public ClienteResponse criar(ClienteRequest request) {
+        Cliente novoCliente = new Cliente(request.nome(), request.email());
+        return toResponse(repository.save(novoCliente));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ClienteResponse> listar(Pageable pageable) {
+        return repository.findByDeletedAtIsNull(pageable).map(this::toResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public Cliente buscarEntidade(Long id) {
+        return repository.findById(id)
+                .filter(c -> c.getDeletedAt() == null)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+    }
+
+    @Transactional(readOnly = true)
+    public ClienteResponse buscar(Long id) {
+        return toResponse(buscarEntidade(id));
+    }
+
+    @Transactional
+    public ClienteResponse atualizar(Long id, ClienteRequest request) {
+        Cliente c = buscarEntidade(id);
+        c.setNome(request.nome());
+        c.setEmail(request.email());
+        return toResponse(repository.save(c));
+    }
+
+    @Transactional
+    public void remover(Long id) {
+        Cliente c = buscarEntidade(id);
+        c.setDeletedAt(LocalDateTime.now());
+        repository.save(c);
+    }
+
+    private ClienteResponse toResponse(Cliente c) {
+        return new ClienteResponse(c.getId(), c.getNome(), c.getEmail());
+    }
 }

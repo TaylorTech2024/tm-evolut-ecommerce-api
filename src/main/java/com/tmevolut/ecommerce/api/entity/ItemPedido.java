@@ -1,32 +1,40 @@
 package com.tmevolut.ecommerce.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.*; // Importa todas as anotações do Lombok de uma vez
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "itens_pedido")
+@Getter         // Gera automaticamente todos os métodos get...
+@Setter         // Gera automaticamente todos os métodos set...
+@NoArgsConstructor // Requisito do Hibernate para criar o objeto vazio
+@AllArgsConstructor // Construtor completo com todos os campos
 public class ItemPedido {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pedido_id")
+    @JoinColumn(name = "pedido_id", nullable = false)
+    @JsonIgnoreProperties("itens")
     private Pedido pedido;
+    // Corrigido: Aqui referenciamos o campo "itens" da classe Pedido,
+    // ou simplesmente ignoramos o "pedido" para evitar loop de JSON.
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "produto_id")
+    @JoinColumn(name = "produto_id", nullable = false)
+    @JsonIgnoreProperties("categoria") // Exemplo: ignora a categoria do produto para não loopar
     private Produto produto;
+
+    @Column(nullable = false)
     private Integer quantidade;
+
+    @Column(name = "preco_unitario", nullable = false, precision = 10, scale = 2)
     private BigDecimal precoUnitario;
+
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Pedido getPedido() { return pedido; }
-    public void setPedido(Pedido pedido) { this.pedido = pedido; }
-    public Produto getProduto() { return produto; }
-    public void setProduto(Produto produto) { this.produto = produto; }
-    public Integer getQuantidade() { return quantidade; }
-    public void setQuantidade(Integer quantidade) { this.quantidade = quantidade; }
-    public BigDecimal getPrecoUnitario() { return precoUnitario; }
-    public void setPrecoUnitario(BigDecimal precoUnitario) { this.precoUnitario = precoUnitario; }
-    public BigDecimal getSubtotal() { return subtotal; }
-    public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
 }
