@@ -8,6 +8,7 @@ Projeto acadêmico da disciplina Cliente-Servidor.
 
 - Herbert Taylor
 - Marcos Nascimento
+- Victor Albuquerque
 
 ## Professor
 
