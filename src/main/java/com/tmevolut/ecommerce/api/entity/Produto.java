@@ -128,7 +128,7 @@ public class Produto {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
+ 
     public void reduzirEstoque(Integer quantidade) {
         if (quantidade == null || quantidade <= 0) {
             throw new IllegalArgumentException("A quantidade para redução deve ser maior que zero.");
@@ -138,7 +138,7 @@ public class Produto {
         }
         this.estoque -= quantidade;
     }
-
+// essa parte do codigo define que a quantidade do //
     public void adicionarEstoque(Integer quantidade) {
         if (quantidade == null || quantidade <= 0) {
             throw new IllegalArgumentException("A quantidade para adição deve ser maior que zero.");
