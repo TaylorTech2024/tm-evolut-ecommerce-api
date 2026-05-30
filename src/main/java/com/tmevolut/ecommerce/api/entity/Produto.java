@@ -1,7 +1,7 @@
 package com.tmevolut.ecommerce.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "produtos")
+@Getter                  // Lombok gera todos os Getters automaticamente
+@Setter                  // Lombok gera todos os Setters automaticamente
+@NoArgsConstructor       // Lombok gera o construtor vazio sozinho! (Remove a necessidade do manual)
 public class Produto {
 
     @Id
@@ -38,13 +41,9 @@ public class Produto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
-    @JsonIgnoreProperties("categoria_id")  //O JSON não vai ler o 'categoria_id' dentro do item
     private Categoria categoria;
 
-    // Construtor vazio para JPA
-    public Produto() {}
-
-    // Construtor principal
+    // Este construtor customizado para criar novos produtos no Service de forma fácil
     public Produto(String nome, String sku, BigDecimal preco, Integer estoque, Categoria categoria) {
         this.nome = nome;
         this.sku = sku;
@@ -75,18 +74,4 @@ public class Produto {
     public void softDelete() {
         this.deletedAt = LocalDateTime.now();
     }
-
-    // --- Getters e Setters ---
-    public Long getId() { return id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getSku() { return sku; }
-    public void setSku(String sku) { this.sku = sku; }
-    public BigDecimal getPreco() { return preco; }
-    public void setPreco(BigDecimal preco) { this.preco = preco; }
-    public Integer getEstoque() { return estoque; }
-    public void setEstoque(Integer estoque) { this.estoque = estoque; }
-    public Categoria getCategoria() { return categoria; }
-    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
-    public LocalDateTime getDeletedAt() { return deletedAt; }
 }

@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> notFound(ResourceNotFoundException ex, HttpServletRequest request) {
-             return build(HttpStatus.NOT_FOUND, "Não encontrado", List.of(ex.getMessage()), request);
+        return build(HttpStatus.NOT_FOUND, "Não encontrado", List.of(ex.getMessage()), request);
     }
 
     @ExceptionHandler(BusinessException.class)
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.BAD_REQUEST, "Validação", msgs, request);
     }
 
-    // --- NOVO MÉTODO: O "Salvaged" ---
+    // --- NOVO METODO: O "Salvaguarda" ---
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse>
     handleGeneralException(Exception ex, HttpServletRequest request) { // Adicionado request
