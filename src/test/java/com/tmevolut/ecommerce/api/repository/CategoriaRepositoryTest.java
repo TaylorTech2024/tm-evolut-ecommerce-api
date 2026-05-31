@@ -1,6 +1,7 @@
 package com.tmevolut.ecommerce.api.repository;
 
 import com.tmevolut.ecommerce.api.entity.Categoria;
+import com.tmevolut.ecommerce.api.repository.CategoriaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,23 +19,23 @@ class CategoriaRepositoryTest {
     @Test
     void deveSalvarCategoria() {
 
-        Categoria categoria = new Categoria("Eletrônicos");
+        Categoria categoria = new Categoria("Eletronicos");
 
         Categoria salva = repository.save(categoria);
 
         assertThat(salva.getId()).isNotNull();
-        assertThat(salva.getNome()).isEqualTo("Eletrônicos");
+        assertThat(salva.getNome()).isEqualTo("Eletronico");
     }
 
     @Test
     void deveListarCategoriasNaoDeletadas() {
 
-        Categoria categoria = new Categoria("Informática");
+        Categoria categoria = new Categoria("informatica");
 
         repository.save(categoria);
 
         Page<Categoria> resultado =
-                repository.findByDeletedAtIsNull(PageRequest.of(0, 10));
+                repository.findByDeleteAtlsNull(PageRequest.of(0, 10));
 
         assertThat(resultado.getContent()).isNotEmpty();
     }

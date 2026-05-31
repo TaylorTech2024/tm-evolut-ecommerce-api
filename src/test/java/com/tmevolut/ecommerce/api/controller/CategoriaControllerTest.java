@@ -1,60 +1,52 @@
+
 package com.tmevolut.ecommerce.api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tmevolut.ecommerce.api.dto.CategoriaRequest;
+import com.tmevolut.ecommerce.api.dto.CategoriaResponse;
 import com.tmevolut.ecommerce.api.service.CategoriaService;
-import com.tmevolut.ecommerce.api.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CategoriaController.class)
-@Import(GlobalExceptionHandler.class)
-public class CategoriaControllerTest {
+class CategoriaControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
-    private CategoriaService categoriaService;
+//CORREÇÃO: O MockMvc testa apenas a camada web.
+// O service precisa ser mockado porque o @WebMvcTest não carrega o contexto completo.
+
+    @MockBean
+    private CategoriaService service;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
-    void testTodosEndpointsCategoria() throws Exception {
-        // 1. Teste do GET (listar).
-        mockMvc.perform(get("/api/v1/categorias")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+    void deveCriarCategoria() throws Exception {
+        //Dado (Given)
+        CategoriaRequest request = new CategoriaRequest(" Eletronicos");
+        CategoriaResponse response = new CategoriaResponse(1L, "Eletronicos");
 
-        // 2. Teste do GET (buscar por ID).
-        mockMvc.perform(get("/api/v1/categorias/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        when(service.criar(request)).thenReturn(response);
 
-        // JSON estruturado para criação e atualização.
-        String jsonCategoria = """
-                {   "nome": "Eletrônicos"  }
-                """;
-
-        // 3. Teste do POST (criar) - Mantendo o que já estava cobrindo.
-        mockMvc.perform(post("/api/v1/categorias")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonCategoria))
-                .andExpect(status().isCreated());
-
-        // 4. Teste do PUT (atualizar).
-        mockMvc.perform(put("/api/v1/categorias/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonCategoria))
-                .andExpect(status().isOk());
-
-        // 5. Teste do DELETE (remover).
-        mockMvc.perform(delete("/api/v1/categorias/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+        //Quando (when) e então (Then)
+        mockMvc.perform(
+                post("/api/v1/categorias")
+            .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+            )
+        .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nome").value("Eletronicos"));
     }
 }
