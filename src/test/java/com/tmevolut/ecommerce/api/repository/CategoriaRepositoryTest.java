@@ -18,7 +18,6 @@ class CategoriaRepositoryTest {
     @Test
     void deveSalvarCategoria() {
         Categoria categoria = new Categoria("Eletrônicos");
-
         Categoria salva = repository.save(categoria);
 
         assertThat(salva.getId()).isNotNull();
@@ -31,7 +30,6 @@ class CategoriaRepositoryTest {
         repository.save(categoria);
 
         Page<Categoria> resultado = repository.findByDeletedAtIsNull(PageRequest.of(0, 10));
-
         assertThat(resultado.getContent()).isNotEmpty();
     }
 }

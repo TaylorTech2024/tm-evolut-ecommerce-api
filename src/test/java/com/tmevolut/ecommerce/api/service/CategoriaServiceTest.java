@@ -49,7 +49,6 @@ public class CategoriaServiceTest {
         categoria.setId(1L);
 
         when(repository.findById(1L)).thenReturn(Optional.of(categoria));
-
         CategoriaResponse response = service.buscar(1L);
 
         assertNotNull(response);
@@ -70,7 +69,6 @@ public class CategoriaServiceTest {
         categoria.setDeletedAt(LocalDateTime.now());
 
         when(repository.findById(1L)).thenReturn(Optional.of(categoria));
-
         assertThrows(RuntimeException.class, () -> service.buscar(1L));
     }
 
