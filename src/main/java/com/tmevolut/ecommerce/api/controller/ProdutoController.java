@@ -51,7 +51,7 @@ public class ProdutoController { // Corrigido de Produce para Produto
     public ResponseEntity<ProdutoResponse> atualizarParcial(
             @PathVariable Long id,
             @Valid @RequestBody ProdutoPatchRequest request) {
-        // CORREÇÃO: Chamando o método correto definido no Service
+
         return ResponseEntity.ok(service.atualizarParcial(id, request));
     }
 

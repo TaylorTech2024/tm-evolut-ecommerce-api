@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "produtos")
-@Getter                  // Lombok gera todos os Getters automaticamente
-@Setter                  // Lombok gera todos os Setters automaticamente
-@NoArgsConstructor       // Lombok gera o construtor vazio sozinho! (Remove a necessidade do manual)
+@Getter
+@Setter
+@NoArgsConstructor
 public class Produto {
 
     @Id
@@ -43,7 +43,7 @@ public class Produto {
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    // Este construtor customizado para criar novos produtos no Service de forma fácil
+    // Construtor parametrizado para inicialização da entidade
     public Produto(String nome, String sku, BigDecimal preco, Integer estoque, Categoria categoria) {
         this.nome = nome;
         this.sku = sku;
@@ -52,7 +52,7 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    // --- Lógica de Negócio (Encapsulada na Entidade) ---
+    // Métodos de comportamento e regras de negócio da entidade
 
     public void reduzirEstoque(Integer quantidade) {
         if (quantidade == null || quantidade <= 0) {

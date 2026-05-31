@@ -38,11 +38,9 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.BAD_REQUEST, "Validação", msgs, request);
     }
 
-    // --- NOVO METODO: O "Salvaguarda" ---
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse>
-    handleGeneralException(Exception ex, HttpServletRequest request) { // Adicionado request
-        logger.error("Erro inesperado no sistema" , ex);
+    public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex, HttpServletRequest request) {
+        logger.error("Erro inesperado no sistema", ex);
 
         return build(
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -52,15 +50,13 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // Agora o build espera 4 argumentos fixos + o objeto request
-    private ResponseEntity<ErrorResponse>
-    build(HttpStatus status, String erro, List<String> mensagens, HttpServletRequest request) {
+    private ResponseEntity<ErrorResponse> build(HttpStatus status, String erro, List<String> mensagens, HttpServletRequest request) {
         ErrorResponse body = new ErrorResponse(
                 LocalDateTime.now(),
                 status.value(),
                 erro,
                 mensagens,
-                request.getRequestURI() // 5º argumento
+                request.getRequestURI()
         );
         return ResponseEntity.status(status).body(body);
     }

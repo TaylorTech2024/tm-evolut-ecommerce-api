@@ -96,7 +96,6 @@ public class PedidoService {
         return toResponse(repository.save(p));
     }
 
-    //  NOVO MÉTODO ADICIONADO PARA CORRIGIR O CONTROLLER //
     @Transactional
     public PedidoResponse alterarStatus(Long id, StatusPedidoRequest request) {
         Pedido p = buscarEntidade(id);

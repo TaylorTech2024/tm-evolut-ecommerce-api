@@ -14,11 +14,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
@@ -44,7 +49,7 @@ public class Pedido {
     private Cliente cliente;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("pedido") // O JSON não tentará ler o 'pedido' de dentro do item
+    @JsonIgnoreProperties("pedido")
     private List<ItemPedido> itens = new ArrayList<>();
 
     public Pedido() {
@@ -55,59 +60,4 @@ public class Pedido {
         this.itens.add(item);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDataPedido() {
-        return dataPedido;
-    }
-
-    public void setDataPedido(LocalDateTime dataPedido) {
-        this.dataPedido = dataPedido;
-    }
-
-    public StatusPedido getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusPedido status) {
-        this.status = status;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public List<ItemPedido> getItens() {
-        return itens;
-    }
-
-    public void setItens(List<ItemPedido> itens) {
-        this.itens = itens;
-    }
 }

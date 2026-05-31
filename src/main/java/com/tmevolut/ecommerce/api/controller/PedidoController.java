@@ -56,7 +56,6 @@ public class PedidoController {
             @PathVariable Long id,
             @Valid @RequestBody StatusPedidoRequest request) {
 
-        // CORREÇÃO: Chamando o método correto de alteração (verifique se na service se chama assim)
-        return ResponseEntity.ok(service.alterarStatus(id, request));
+          return ResponseEntity.ok(service.alterarStatus(id, request));
     }
 }
