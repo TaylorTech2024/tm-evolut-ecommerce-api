@@ -84,7 +84,7 @@ class PedidoServiceTest {
 
     @Test
     void deveCriarPedidoComSucessoPreenchendoMetodoEIfs() {
-       PedidoRequest pedidoRequest = mock(PedidoRequest.class);
+        PedidoRequest pedidoRequest = mock(PedidoRequest.class);
         ItemPedidoRequest itemRequest = mock(ItemPedidoRequest.class);
 
         try {
@@ -96,7 +96,8 @@ class PedidoServiceTest {
             Pedido pedidoCompleto = criarPedidoCompletoCenario(StatusPedido.ABERTO);
 
             when(clienteService.buscarEntidade(any())).thenReturn(pedidoCompleto.getCliente());
-            when(produtoService.buscarEntidade(any())).thenReturn(pedidoCompleto.getItens().getFirst().getProduto());
+
+            when(produtoService.buscarEntidade(any())).thenReturn(pedidoCompleto.getItens().get(0).getProduto());
             when(repository.save(any(Pedido.class))).thenReturn(pedidoCompleto);
 
             service.criar(pedidoRequest);
@@ -105,12 +106,10 @@ class PedidoServiceTest {
 
     @Test
     void devePagarPedidoComSucessoECenariosDeErro() {
-        // Validação do fluxo com pedido ativo
         Pedido pedidoAberto = criarPedidoCompletoCenario(StatusPedido.ABERTO);
         when(repository.findById(1L)).thenReturn(Optional.of(pedidoAberto));
         try { service.pagar(1L); } catch (Exception ignored) {}
 
-        // Validação de comportamento com pedido previamente cancelado
         Pedido pedidoCancelado = criarPedidoCompletoCenario(StatusPedido.CANCELADO);
         when(repository.findById(2L)).thenReturn(Optional.of(pedidoCancelado));
         try { service.pagar(2L); } catch (Exception ignored) {}
@@ -118,12 +117,10 @@ class PedidoServiceTest {
 
     @Test
     void deveCancelarPedidoComSucessoECenariosDeErro() {
-        // Validação do fluxo com pedido ativo
         Pedido pedidoAberto = criarPedidoCompletoCenario(StatusPedido.ABERTO);
         when(repository.findById(1L)).thenReturn(Optional.of(pedidoAberto));
         try { service.cancelar(1L); } catch (Exception ignored) {}
 
-        // Validação de comportamento com pedido previamente pago
         Pedido pedidoPago = criarPedidoCompletoCenario(StatusPedido.PAGO);
         when(repository.findById(2L)).thenReturn(Optional.of(pedidoPago));
         try { service.cancelar(2L); } catch (Exception ignored) {}
