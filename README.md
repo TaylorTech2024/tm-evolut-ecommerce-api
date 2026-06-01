@@ -12,7 +12,7 @@ Projeto acadêmico da disciplina Cliente-Servidor.
 
 ## Professor
 
-Francisco Ereberto
+Francisco Erberto
 
 ## Instituição
 
