@@ -8,7 +8,7 @@ import com.tmevolut.ecommerce.api.service.CategoriaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,10 +22,8 @@ class CategoriaControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//CORREÇÃO: O MockMvc testa apenas a camada web.
-// O service precisa ser mockado porque o @WebMvcTest não carrega o contexto completo.
 
-    @MockBean
+    @MockitoBean
     private CategoriaService service;
 
     @Autowired

@@ -1,8 +1,7 @@
 package com.tmevolut.ecommerce.api.controller;
 
-import com.tmevolut.ecommerce.api.dto.ClienteResponse;
-import com.tmevolut.ecommerce.api.service.ClienteService;
 import com.tmevolut.ecommerce.api.exception.GlobalExceptionHandler;
+import com.tmevolut.ecommerce.api.service.ClienteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,7 +25,7 @@ public class ClienteControllerTest {
 
     @Test
     void testTodosEndpointsCliente() throws Exception {
-        // 1. Teste do GET (listar) - O que já estava funcionando.
+        // 1. Teste do GET (listar)
         mockMvc.perform(get("/api/v1/clientes")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -36,7 +35,6 @@ public class ClienteControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        // JSON base para criação e atualização de cliente
         String jsonCliente = """
             {
                 "nome": "Marcos Silva",

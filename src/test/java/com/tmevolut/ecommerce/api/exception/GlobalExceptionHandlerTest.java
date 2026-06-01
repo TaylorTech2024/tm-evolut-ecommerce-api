@@ -1,6 +1,5 @@
 package com.tmevolut.ecommerce.api.exception;
 
-import com.tmevolut.ecommerce.api.exception.ErrorResponse; // Importado o tipo exato do seu projeto
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

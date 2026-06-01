@@ -17,7 +17,6 @@ public class RootControllerTest {
 
     @Test
     void deveRedirecionarParaSwagger() throws Exception {
-        // CORREÇÃO: Ajustado de "swagger-ui/index.html" para "/swagger-ui.html".
         mockMvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/swagger-ui.html"));

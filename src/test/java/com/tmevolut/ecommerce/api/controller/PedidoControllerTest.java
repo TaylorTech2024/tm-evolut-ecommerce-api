@@ -25,7 +25,6 @@ public class PedidoControllerTest {
 
     @Test
     void testTodosEndpointsPedido() throws Exception {
-        // 1. Teste do POST (criar) - JSON válido para o corpo da requisição.
         String jsonPedidoValido = """
             {
                 "clienteId": 1,
@@ -60,12 +59,12 @@ public class PedidoControllerTest {
                 .andExpect(status().isOk());
 
         // 5. Teste do PATCH (pagar).
-        mockMvc.perform(patch("/api/v1/pedidos/1/pagar") // Ajuste a URL caso use parâmetros ou sub-rotas
+        mockMvc.perform(patch("/api/v1/pedidos/1/pagar")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         // 6. Teste do PATCH/DELETE (cancelar).
-        mockMvc.perform(patch("/api/v1/pedidos/1/cancelar") // Ajuste se for delete() ou patch() no original
+        mockMvc.perform(patch("/api/v1/pedidos/1/cancelar")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

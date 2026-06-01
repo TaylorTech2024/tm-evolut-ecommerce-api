@@ -17,19 +17,22 @@ class CategoriaRepositoryTest {
 
     @Test
     void deveSalvarCategoria() {
-        Categoria categoria = new Categoria("Eletrônicos");
+        Categoria categoria = new Categoria("Eletronico");
+
         Categoria salva = repository.save(categoria);
 
         assertThat(salva.getId()).isNotNull();
-        assertThat(salva.getNome()).isEqualTo("Eletrônicos");
+        assertThat(salva.getNome()).isEqualTo("Eletronico");
     }
 
     @Test
     void deveListarCategoriasNaoDeletadas() {
-        Categoria categoria = new Categoria("Informática");
+        Categoria categoria = new Categoria("informatica");
         repository.save(categoria);
 
-        Page<Categoria> resultado = repository.findByDeletedAtIsNull(PageRequest.of(0, 10));
+        Page<Categoria> resultado =
+                repository.findByDeletedAtIsNull(PageRequest.of(0, 10));
+
         assertThat(resultado.getContent()).isNotEmpty();
     }
 }

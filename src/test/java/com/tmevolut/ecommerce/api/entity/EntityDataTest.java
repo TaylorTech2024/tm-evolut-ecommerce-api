@@ -13,11 +13,9 @@ class EntityDataTest {
 
     @Test
     void testCompletoCliente() {
-        // 1. Criação do objeto cliente passando as variáveis pelo construtor.
         Cliente cliente = new Cliente("Marcos", "marcos@email.com");
         cliente.setId(1L);
 
-        // 2. Define os campos de auditoria e a lista de relacionamentos da entidade.
         LocalDateTime agora = LocalDateTime.now();
         cliente.setCreatedAt(agora);
         cliente.setUpdatedAt(agora);
@@ -26,7 +24,6 @@ class EntityDataTest {
         List<Pedido> listaPedidos = new ArrayList<>();
         cliente.setPedidos(listaPedidos);
 
-        // Validação dos métodos seletores (getters) da classe.
         assertEquals(1L, cliente.getId());
         assertEquals("Marcos", cliente.getNome());
         assertEquals("marcos@email.com", cliente.getEmail());
@@ -42,11 +39,10 @@ class EntityDataTest {
         categoria.setId(1L);
         categoria.setNome("Eletrônicos");
 
-        // Construtor cheio do Produto.
         Produto produto = new Produto("Notebook Nitro", "TM-9999", BigDecimal.valueOf(4500), 10, categoria);
         produto.setId(1L);
 
-        // Teste dos fluxos de alteração e validação de estoque.
+        // Teste dos fluxos de alteração de estoque (mantendo a segurança do try-catch)
         try { produto.adicionarEstoque(5); } catch (Exception ignored) {}
         try { produto.adicionarEstoque(-1); } catch (Exception ignored) {}
         try { produto.reduzirEstoque(3); } catch (Exception ignored) {}
@@ -54,13 +50,25 @@ class EntityDataTest {
         try { produto.reduzirEstoque(-5); } catch (Exception ignored) {}
         try { produto.reduzirEstoque(null); } catch (Exception ignored) {}
 
-        // Garantir que os métodos de date (getters e setters) estão funcionando de acordo.
         LocalDateTime agora = LocalDateTime.now();
-        try { produto.setCreatedAt(agora); produto.getCreatedAt(); } catch (Exception ignored) {}
-        try { produto.setUpdatedAt(agora); produto.getUpdatedAt(); } catch (Exception ignored) {}
-        try { produto.setDeletedAt(agora); produto.getDeletedAt(); } catch (Exception ignored) {}
+
+        try {
+            produto.setCreatedAt(agora);
+            assertEquals(agora, produto.getCreatedAt());
+        } catch (Exception ignored) {}
+
+        try {
+            produto.setUpdatedAt(agora);
+            assertEquals(agora, produto.getUpdatedAt());
+        } catch (Exception ignored) {}
+
+        try {
+            produto.setDeletedAt(agora);
+            assertEquals(agora, produto.getDeletedAt());
+        } catch (Exception ignored) {}
 
         produto.softDelete();
+        assertEquals(1L, produto.getId());
     }
 
     @Test
@@ -74,17 +82,21 @@ class EntityDataTest {
         pedido.setStatus(StatusPedido.ABERTO);
         pedido.setTotal(BigDecimal.TEN);
 
-        // Forçando os relacionamentos do Pedido
-        try { pedido.setCliente(cliente); } catch (Exception ignored) {}
-        try { pedido.getCliente(); } catch (Exception ignored) {}
+        try {
+            pedido.setCliente(cliente);
+            assertEquals(cliente, pedido.getCliente());
+        } catch (Exception ignored) {}
 
         List<ItemPedido> itens = new ArrayList<>();
         pedido.setItens(itens);
-        try { pedido.setDeletedAt(agora); pedido.getDeletedAt(); } catch (Exception ignored) {}
+
+        try {
+            pedido.setDeletedAt(agora);
+            assertEquals(agora, pedido.getDeletedAt());
+        } catch (Exception ignored) {}
 
         assertEquals(itens, pedido.getItens());
 
-        // Forçando os relacionamentos do ItemPedido.
         Produto produto = new Produto();
         ItemPedido item = new ItemPedido();
         item.setId(1L);
@@ -92,8 +104,15 @@ class EntityDataTest {
         item.setPrecoUnitario(BigDecimal.valueOf(5));
         item.setSubtotal(BigDecimal.TEN);
 
-        try { item.setPedido(pedido); item.getPedido(); } catch (Exception ignored) {}
-        try { item.setProduto(produto); item.getProduto(); } catch (Exception ignored) {}
+        try {
+            item.setPedido(pedido);
+            assertEquals(pedido, item.getPedido());
+        } catch (Exception ignored) {}
+
+        try {
+            item.setProduto(produto);
+            assertEquals(produto, item.getProduto());
+        } catch (Exception ignored) {}
     }
 
     @Test
