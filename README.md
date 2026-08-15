@@ -457,3 +457,13 @@ A aplicação foi desenvolvida com foco acadêmico e utiliza uma arquitetura bas
 ## 📄 Licença
 
 Projeto desenvolvido para fins acadêmicos.
+
+## 📚 Documentação
+
+A documentação complementar está disponível na pasta [`docs`](./docs).
+
+- [Arquitetura](./docs/arquitetura.md)
+- [Endpoints](./docs/endpoints.md)
+- [Banco de Dados](./docs/banco-de-dados.md)
+- [Testes](./docs/testes.md)
+- [Requisitos](./docs/requisitos.md)
